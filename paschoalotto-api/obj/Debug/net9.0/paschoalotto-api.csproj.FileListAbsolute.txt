@@ -120,3 +120,7 @@ C:\Repository\Paschoalotto-Test\paschoalotto-api\obj\Debug\net9.0\refint\paschoa
 C:\Repository\Paschoalotto-Test\paschoalotto-api\obj\Debug\net9.0\paschoalotto-api.pdb
 C:\Repository\Paschoalotto-Test\paschoalotto-api\obj\Debug\net9.0\paschoalotto-api.genruntimeconfig.cache
 C:\Repository\Paschoalotto-Test\paschoalotto-api\obj\Debug\net9.0\ref\paschoalotto-api.dll
+C:\Repository\Paschoalotto-Test\paschoalotto-api\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Repository\Paschoalotto-Test\paschoalotto-api\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Repository\Paschoalotto-Test\paschoalotto-api\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Repository\Paschoalotto-Test\paschoalotto-api\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

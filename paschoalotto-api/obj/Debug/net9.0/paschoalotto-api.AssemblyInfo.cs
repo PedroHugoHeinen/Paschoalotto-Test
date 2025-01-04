@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("paschoalotto-api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+56bc63485ee10e7e5609b11915eb26689f236192")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+de29c03ef88656fe01ed1bf17a9967be535b1022")]
 [assembly: System.Reflection.AssemblyProductAttribute("paschoalotto-api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("paschoalotto-api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
