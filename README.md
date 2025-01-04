@@ -10,7 +10,6 @@ Configure project
 • Configure the connection string in the file "appsettings.json"
 • Run in project
 ```
-
 ## Tech Stack
 
 >**Front-end**
@@ -30,3 +29,7 @@ Configure project
 >**API Integration**
 
 [![RandomAPI](https://img.shields.io/badge/RandomAPI-79b039?style=for-the-badge)](https://randomapi.com/documentation)
+
+## Endpoint Flow
+
+`Client` > `Controller` > `Service` > `Repository`
