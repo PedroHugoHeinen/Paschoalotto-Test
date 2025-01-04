@@ -10,5 +10,5 @@
         
         Task<T> UpdateAsync(T entity);
         
-        Task DeleteAsync(int id); }
+        Task<bool> DeleteAsync(int id); }
 }

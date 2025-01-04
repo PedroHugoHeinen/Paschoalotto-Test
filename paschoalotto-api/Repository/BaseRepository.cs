@@ -25,27 +25,33 @@ namespace paschoalotto_api.Repository
             return await this.dbSet.FindAsync(id);
         }
 
-        public async Task InsertAsync(T entity)
+        public async Task<T> InsertAsync(T entity)
         {
             await this.dbSet.AddAsync(entity);
             await this.applicationDbContext.SaveChangesAsync();
+            return entity;
         }
 
-        public async Task UpdateAsync(T entity)
+        public async Task<T> UpdateAsync(T entity)
         {
             this.dbSet.Attach(entity);
             this.applicationDbContext.Entry(entity).State = EntityState.Modified;
             await this.applicationDbContext.SaveChangesAsync();
+            return entity;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             var entity = await GetByIdAsync(id);
-            if (entity != null)
+
+            if (entity != default)
             {
                 this.dbSet.Remove(entity);
                 await this.applicationDbContext.SaveChangesAsync();
+                return true;
             }
+
+            return false;
         }
     }
 }

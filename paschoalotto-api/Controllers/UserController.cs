@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using paschoalotto_api.Models;
-using paschoalotto_api.Data;
-using Microsoft.EntityFrameworkCore;
 using paschoalotto_api.Globals.DTOs;
 using paschoalotto_api.Services.Interfaces;
 
 namespace paschoalotto_api.Controllers
 {
     [ApiController]
-    [Route("api/user")]
+    [Route("PaschoalottoApi/User")]
     public class UsersController : ControllerBase
     {
         private readonly IUserService userService;
@@ -23,7 +20,7 @@ namespace paschoalotto_api.Controllers
         {
             var response = await this.userService.GetAllAsync();
 
-            if (response == default)
+            if (response?.Any() != true)
             {
                 return NotFound();
             }
@@ -49,10 +46,15 @@ namespace paschoalotto_api.Controllers
         {
             var response = await this.userService.InsertAsync(userDTO);
 
-            return response;
+            if (response == default)
+            {
+                return BadRequest();
+            }
+
+            return Ok(response);
         }
         
-        [HttpPut("Update/{id}")]
+        [HttpPut("Update")]
         public async Task<ActionResult<UserDTO>> UpdateAsync(UserDTO userDTO)
         {
             var response = await this.userService.UpdateAsync(userDTO);
@@ -62,7 +64,7 @@ namespace paschoalotto_api.Controllers
                 return NotFound();
             }
 
-            return response;
+            return Ok(response);
         }
 
         [HttpDelete("Delete/{id}")]
@@ -75,13 +77,20 @@ namespace paschoalotto_api.Controllers
                 return NotFound();
             }
 
-            return response;
+            return Ok(response);
+        }
+
+        [HttpGet("GetRandom")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetRandomAsync()
+        {
+            var response = await this.userService.GetRandomAsync();
+
+            if (response == default)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
         }
     }
 }
-
-
-
-
-        
-
