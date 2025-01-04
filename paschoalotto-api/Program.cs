@@ -2,16 +2,27 @@ using paschoalotto_api.Data;
 using Microsoft.EntityFrameworkCore;
 using paschoalotto_api.Services.Interfaces;
 using paschoalotto_api.Services;
+using paschoalotto_api.Repository.Interfaces;
+using paschoalotto_api.Repository;
+using AutoMapper;
+using paschoalotto_api.Globals.DTOs;
+using paschoalotto_api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
+builder.Services.AddControllers();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddControllers();
+var mapperConfig = new MapperConfiguration(cfg => { cfg.CreateMap<User, UserDTO>(); });
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddHttpClient<IUserRandomService, UserRandomService>();
 
 builder.Services.AddSwaggerGen();
 

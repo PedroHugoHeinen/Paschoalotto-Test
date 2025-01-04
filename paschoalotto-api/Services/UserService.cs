@@ -1,38 +1,31 @@
-﻿using paschoalotto_api.Data;
-using paschoalotto_api.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using paschoalotto_api.Models;
 using paschoalotto_api.Services.Interfaces;
 using paschoalotto_api.Globals.DTOs;
 using paschoalotto_api.Repository.Interfaces;
+using AutoMapper;
 
 namespace paschoalotto_api.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository userRepository;
+        private readonly IUserRandomService userRandomService;
+        private readonly IMapper mapper;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository,
+               IUserRandomService userRandomService,
+               IMapper mapper)
         {
             this.userRepository = userRepository;
+            this.userRandomService = userRandomService;
+            this.mapper = mapper;
         }
 
         public async Task<IEnumerable<UserDTO>> GetAllAsync()
         {
             var users = await userRepository.GetAllAsync();
 
-            return users.Select(user => new UserDTO
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Phone = user.Phone,
-                Gender = user.Gender,
-                Age = user.Age,
-                Status = user.Status,
-                CreateAt = user.CreateAt,
-                LastUpdateAt = user.LastUpdateAt,
-            });
+            return this.mapper.Map<IEnumerable<UserDTO>>(users);
         }
 
         public async Task<UserDTO> GetByIdAsync(int id)
@@ -44,19 +37,7 @@ namespace paschoalotto_api.Services
                 return new UserDTO();
             }
 
-            return new UserDTO
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Phone = user.Phone,
-                Gender = user.Gender,
-                Age = user.Age,
-                Status = user.Status,
-                CreateAt = user.CreateAt,
-                LastUpdateAt = user.LastUpdateAt,
-            };
+            return this.mapper.Map<UserDTO>(user);
         }
 
         public async Task<UserDTO> InsertAsync(UserDTO userDTO)
@@ -72,66 +53,52 @@ namespace paschoalotto_api.Services
                     Gender = userDTO.Gender,
                     Age = userDTO.Age,
                     Status = userDTO.Status,
-                    CreateAt = DateTimeOffset.Now,
+                    CreateAt = DateTimeOffset.Now.ToUniversalTime(),
                     LastUpdateAt = null,
                 });
 
-            userDTO.Id = user.Id;
-            return userDTO;
+            return this.mapper.Map<UserDTO>(user);
         }
 
         public async Task<UserDTO> UpdateAsync(UserDTO userDTO)
         {
-            var user = await this.userRepository.GetByIdAsync(userDTO.Id);
+            var userToUpdate = this.mapper.Map<User>(userDTO);
+            userToUpdate.LastUpdateAt = DateTimeOffset.Now.ToUniversalTime();
 
-            if (user == null)
-            {
-                return new UserDTO();
-            }
+            var user = await this.userRepository.UpdateAsync(userToUpdate);
 
-            var userToUpdate = new User
-            {
-                Id = user.Id,
-                FirstName = userDTO.FirstName,
-                LastName = userDTO.LastName,
-                Email = userDTO.Email,
-                Phone = userDTO.Phone,
-                Gender = userDTO.Gender,
-                Age = userDTO.Age,
-                Status = userDTO.Status,
-                CreateAt = user.CreateAt,
-                LastUpdateAt = DateTimeOffset.Now,
-            };
-
-            await this.userRepository.UpdateAsync(userToUpdate);
-
-            return new UserDTO
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Phone = user.Phone,
-                Gender = user.Gender,
-                Age = user.Age,
-                Status = user.Status,
-                CreateAt = user.CreateAt,
-                LastUpdateAt = user.LastUpdateAt,
-            };
+            return this.mapper.Map<UserDTO>(user);
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var user = await this.userRepository.GetByIdAsync(id);
+            return await this.userRepository.DeleteAsync(id); 
+        }
 
-            if (user == default)
+        public async Task<IEnumerable<UserDTO>> GetRandomAsync()
+        {
+            var users = await this.userRandomService.GetUsersRandomAsync(10);
+
+            var insertedUsers = await this.InsertRandomAsync(users);
+
+            return this.mapper.Map<IEnumerable<UserDTO>>(insertedUsers);
+        }
+
+        private async Task<IEnumerable<User>> InsertRandomAsync(IEnumerable<User> users)
+        {
+            if (users?.Any() != true)
             {
-                return false;
+                return Enumerable.Empty<User>();
             }
 
-            await this.DeleteAsync(user.Id);
+            var insertedUsers = new List<User>();
 
-            return true;
+            foreach (var user in users)
+            {
+                insertedUsers.Add(await this.userRepository.InsertAsync(user));
+            }
+
+            return insertedUsers;
         }
     }
 }
