@@ -15,7 +15,7 @@ Configure project
 >**Front-end**
 
 ![HTML5](https://img.shields.io/badge/HTML5-f26327?style=for-the-badge)
-![CSS3](https://img.shields.io/badge/CSS3-2465f1?style=for-the-badge)
+![CSS3](https://img.shields.io/badge/Bootstrap-2465f1?style=for-the-badge)
 ![JS](https://img.shields.io/badge/JavaScript-f7df1e?style=for-the-badge)
 
 >**Back-end**
