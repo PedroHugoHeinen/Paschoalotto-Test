@@ -80,10 +80,10 @@ namespace paschoalotto_api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("GetRandom")]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetRandomAsync()
+        [HttpGet("InsertRandom")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> InsertRandomAsync()
         {
-            var response = await this.userService.GetRandomAsync();
+            var response = await this.userService.InsertRandomAsync();
 
             if (response == default)
             {

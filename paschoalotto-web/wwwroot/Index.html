@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paschoalotto Test</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+    <div class="container col-12 mt-3">
+        <h2 class="text-start text-uppercase">Paschoalotto Test</h2>
+        <div class="row">
+            <div class="col-md-8">
+                <h5>Usuários Cadastrados</h5>
+                <table class="table table-bordered" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Contato</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <h5>Adicionar | Editar</h5>
+                <form id="userForm">
+                    <div class="form-group">
+                        <label for="firstName">Primeiro Nome</label>
+                        <input type="text" class="form-control" id="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Último Nome</label>
+                        <input type="text" class="form-control" id="lastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Contato</label>
+                        <input type="text" class="form-control col-4" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gênero</label>
+                        <input type="text" class="form-control col-3" id="gender" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Idade</label>
+                        <input type="number" class="form-control col-2" id="age" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <input type="checkbox" class="form-control col-1" id="status">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <button type="button" class="btn btn-secondary" id="cancelEdit">Cancelar</button>
+                    <input type="hidden" id="id" value="">
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

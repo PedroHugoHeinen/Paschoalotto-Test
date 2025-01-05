@@ -75,20 +75,13 @@ namespace paschoalotto_api.Services
             return await this.userRepository.DeleteAsync(id); 
         }
 
-        public async Task<IEnumerable<UserDTO>> GetRandomAsync()
+        public async Task<IEnumerable<UserDTO>> InsertRandomAsync()
         {
             var users = await this.userRandomService.GetUsersRandomAsync(10);
 
-            var insertedUsers = await this.InsertRandomAsync(users);
-
-            return this.mapper.Map<IEnumerable<UserDTO>>(insertedUsers);
-        }
-
-        private async Task<IEnumerable<User>> InsertRandomAsync(IEnumerable<User> users)
-        {
             if (users?.Any() != true)
             {
-                return Enumerable.Empty<User>();
+                return Enumerable.Empty<UserDTO>();
             }
 
             var insertedUsers = new List<User>();
@@ -98,7 +91,7 @@ namespace paschoalotto_api.Services
                 insertedUsers.Add(await this.userRepository.InsertAsync(user));
             }
 
-            return insertedUsers;
+            return this.mapper.Map<IEnumerable<UserDTO>>(insertedUsers);
         }
     }
 }
