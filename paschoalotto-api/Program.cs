@@ -17,7 +17,7 @@ builder.Services.AddCors(options => { options.AddPolicy("AllowAll", builder => {
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-var mapperConfig = new MapperConfiguration(cfg => { cfg.CreateMap<User, UserDTO>(); });
+var mapperConfig = new MapperConfiguration(cfg => { cfg.CreateMap<User, UserDTO>().ReverseMap(); });
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 

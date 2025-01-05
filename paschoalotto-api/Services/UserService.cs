@@ -25,7 +25,7 @@ namespace paschoalotto_api.Services
         {
             var users = await userRepository.GetAllAsync();
 
-            return this.mapper.Map<IEnumerable<UserDTO>>(users);
+            return this.mapper.Map<IEnumerable<UserDTO>>(users).OrderBy(x => x.Id);
         }
 
         public async Task<UserDTO> GetByIdAsync(int id)
@@ -63,6 +63,8 @@ namespace paschoalotto_api.Services
         public async Task<UserDTO> UpdateAsync(UserDTO userDTO)
         {
             var userToUpdate = this.mapper.Map<User>(userDTO);
+
+            userToUpdate.CreateAt = userToUpdate.CreateAt.ToUniversalTime();
             userToUpdate.LastUpdateAt = DateTimeOffset.Now.ToUniversalTime();
 
             var user = await this.userRepository.UpdateAsync(userToUpdate);

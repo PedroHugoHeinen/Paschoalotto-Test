@@ -1,6 +1,6 @@
 ﻿const apiUrl = 'https://localhost:7287/PaschoalottoApi/User';
 
-async function displayUsers() {
+async function displayAllUsers() {
     const response = await fetch(`${apiUrl}/GetAll`);
     const users = await response.json();
 
@@ -23,12 +23,12 @@ async function displayUsers() {
         phoneCell.textContent = user.phone;
 
         const statusCell = row.insertCell(4);
-        statusCell.textContent = user.status;
+        statusCell.textContent = (user.status === true? 'Ativo' : 'Inativo');
 
         const actionsCell = row.insertCell(5);
         actionsCell.innerHTML = `
-            <button class="btn btn-warning btn-sm" onclick="editUser('${user.id}')">Editar</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteUser('${user.id}')">Excluir</button>
+            <button class="btn btn-secondary btn-sm" onclick="editUser('${user.id}')">Editar</button>
+            <button class="btn btn-warning btn-sm" onclick="deleteUser('${user.id}')">Excluir</button>
         `;
     });
 }
@@ -43,7 +43,10 @@ document.getElementById("userForm").addEventListener("submit", async function (e
     const phone = document.getElementById("phone").value;
     const gender = document.getElementById("gender").value;
     const age = document.getElementById("age").value;
-    const status = document.getElementById("status").value;
+    const status = document.getElementById("status").checked;
+    const createAt = document.getElementById("createAt").value;
+    const lastUpdateAt = document.getElementById("lastUpdateAt").value;
+
 
     const userDTO =
     {
@@ -54,10 +57,18 @@ document.getElementById("userForm").addEventListener("submit", async function (e
         phone,
         gender,
         age,
-        status
+        status,
+        createAt,
+        lastUpdateAt
     };
 
     if (id) {
+        const confirmAction = await confirmActionAsync('Atenção', 'Tem certeza que salvar as alterações?');
+
+        if (!confirmAction) { return; }
+
+        userDTO.lastUpdateAt = userDTO.lastUpdateAt || null;
+
         await fetch(`${apiUrl}/Update`, {
             method: 'PUT',
             headers: {
@@ -66,6 +77,10 @@ document.getElementById("userForm").addEventListener("submit", async function (e
             body: JSON.stringify(userDTO)
         });
     } else {
+        userDTO.id = 0;
+        userDTO.createAt = new Date();
+        userDTO.lastUpdateAt = null;
+
         await fetch(`${apiUrl}/Insert`, {
             method: 'POST',
             headers: {
@@ -75,14 +90,12 @@ document.getElementById("userForm").addEventListener("submit", async function (e
         });
     }
 
-    displayUsers();
+    displayAllUsers();
     this.reset();
     document.getElementById("id").value = "";
 });
 
 async function editUser(id) {
-    if (await !confirmAction('Editar Usuário', 'Tem certeza que deseja salvar a alteração?')) return
-
     const response = await fetch(`${apiUrl}/GetById/${id}`);
     const user = await response.json();
 
@@ -93,24 +106,40 @@ async function editUser(id) {
     document.getElementById("phone").value = user.phone;
     document.getElementById("gender").value = user.gender;
     document.getElementById("age").value = user.age;
-    document.getElementById("status").value = user.status;
+    document.getElementById("status").checked = user.status;
+    document.getElementById("createAt").value = user.createAt;
+    document.getElementById("lastUpdateAt").value = user.lastUpdateAt;
 }
 
 async function deleteUser(id) {
-    const confirmAction = await !confirmActionAsync('Excluir Usuário', 'Tem certeza que deseja excluir o usuário?');
+    const confirmAction = await confirmActionAsync('Atenção', 'Tem certeza que deseja excluir o usuário?');
 
-    if (!confirmAction) {return}
+    if (!confirmAction) { return; }
 
     await fetch(`${apiUrl}/Delete/${id}`, {
         method: 'DELETE'
     });
 
-    displayUsers();
+    displayAllUsers();
 }
 
 document.getElementById("cancelEdit").addEventListener("click", function () {
     document.getElementById("userForm").reset();
     document.getElementById("id").value = "";
+});
+
+document.getElementById("getReport").addEventListener("click", async function () {
+    
+});
+
+document.getElementById("insertRandom").addEventListener("click", async function () {
+    await fetch(`${apiUrl}/InsertRandom`);
+
+    displayAllUsers();
+});
+
+document.getElementById("refreshList").addEventListener("click", async function () {
+    displayAllUsers();
 });
 
 async function confirmActionAsync(title, message) {
@@ -119,13 +148,13 @@ async function confirmActionAsync(title, message) {
         text: message,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#0051fa',
-        cancelButtonColor: '#5a6268',
+        confirmButtonColor: '#5a6268',
+        cancelButtonColor: '#ffc107',
         confirmButtonText: 'Sim',
-        cancelButtonText: 'Cancelar'
+        cancelButtonText: 'Não'
     });
 
     return result.isConfirmed;
 }
 
-displayUsers();
+displayAllUsers();

@@ -14,8 +14,12 @@
         <h2 class="text-start text-uppercase">Paschoalotto Test</h2>
         <div class="row">
             <div class="col-md-8">
-                <h5>Usuários Cadastrados</h5>
-                <table class="table table-bordered" id="usersTable">
+                <div class="row d-flex justify-content-end pl-3 pr-3 pb-2 bg-light text-dark">
+                    <button type="button" class="btn btn-secondary mr-1 btn-sm" id="getReport">Gerar Relatório</button>
+                    <button type="button" class="btn btn-secondary mr-1 btn-sm" id="insertRandom">Adicionar +10</button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="refreshList">Atualizar</button>
+                </div>
+                <table class="table table-bordered table-striped table-sm" id="usersTable">
                     <thead>
                         <tr>
                             <th>Id</th>
@@ -29,7 +33,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 bg-light text-dark">
                 <h5>Adicionar | Editar</h5>
                 <form id="userForm">
                     <div class="form-group">
@@ -44,25 +48,31 @@
                         <label for="email">Email</label>
                         <input type="email" class="form-control" id="email" required>
                     </div>
-                    <div class="form-group">
-                        <label for="phone">Contato</label>
-                        <input type="text" class="form-control col-4" id="phone" required>
+                    <div class="row pl-3">
+                        <div class="form-group pr-2">
+                            <label for="phone">Contato</label>
+                            <input type="text" class="form-control col" id="phone" required>
+                        </div>
+                        <div class="form-group pr-3">
+                            <label for="gender">Gênero</label>
+                            <input type="text" class="form-control col" id="gender" required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="gender">Gênero</label>
-                        <input type="text" class="form-control col-3" id="gender" required>
+                    <div class="row pl-3">
+                        <div class="form-group pr-2">
+                            <label for="age">Idade</label>
+                            <input type="number" class="form-control col-6" id="age" required>
+                        </div>
+                        <div class="form-group pr-3">
+                            <label for="status">Status</label>
+                            <input type="checkbox" class="form-control col-6" id="status">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="age">Idade</label>
-                        <input type="number" class="form-control col-2" id="age" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <input type="checkbox" class="form-control col-1" id="status">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Salvar</button>
-                    <button type="button" class="btn btn-secondary" id="cancelEdit">Cancelar</button>
+                    <button type="submit" class="btn btn-success btn-sm">Salvar</button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="cancelEdit">Cancelar</button>
                     <input type="hidden" id="id" value="">
+                    <input type="hidden" id="createAt" value="">
+                    <input type="hidden" id="lastUpdateAt" value="">
                 </form>
             </div>
         </div>
