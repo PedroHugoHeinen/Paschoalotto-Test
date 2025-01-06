@@ -14,6 +14,8 @@ namespace paschoalotto_api.Services.Interfaces
         
         Task<bool> DeleteAsync(int id);
 
-        Task<IEnumerable<UserDTO>> GetRandomAsync();
+        Task<IEnumerable<UserDTO>> InsertRandomAsync();
+
+        Task<byte[]> GenerateReportAsync();
     }
 }

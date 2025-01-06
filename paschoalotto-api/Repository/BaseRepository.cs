@@ -29,6 +29,7 @@ namespace paschoalotto_api.Repository
         {
             await this.dbSet.AddAsync(entity);
             await this.applicationDbContext.SaveChangesAsync();
+
             return entity;
         }
 
@@ -37,6 +38,7 @@ namespace paschoalotto_api.Repository
             this.dbSet.Attach(entity);
             this.applicationDbContext.Entry(entity).State = EntityState.Modified;
             await this.applicationDbContext.SaveChangesAsync();
+
             return entity;
         }
 
@@ -48,6 +50,7 @@ namespace paschoalotto_api.Repository
             {
                 this.dbSet.Remove(entity);
                 await this.applicationDbContext.SaveChangesAsync();
+
                 return true;
             }
 

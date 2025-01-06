@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>paschoalotto_web</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\Index.html" />
+    <Content Remove="wwwroot\js\index.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Index.html" />
+    <None Include="wwwroot\js\index.js" />
+  </ItemGroup>
+
+</Project>
