@@ -8,8 +8,10 @@ Configure project
 ```
 • Restore backup "paschoalotto-base" in PostgreSQL
 • Configure the connection string in the file "appsettings.json"
-• Run in project
+• Run in projects API and Web
 ```
+![image](https://github.com/user-attachments/assets/4c79a423-5d2b-4161-80dd-19f390bddcff)
+
 ## Tech Stack
 
 >**Front-end**
@@ -33,3 +35,68 @@ Configure project
 ## Endpoint Flow
 
 `Client` > `Controller` > `Service` > `Repository`
+
+## API Reference
+
+#### Get all users
+```https
+  GET /PaschoalottoApi/User/GetAll
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+|  |  | Simple call |
+
+#### Get user by id
+```https
+  GET /PaschoalottoApi/User/GetById/{id}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `int` | **Required**. Id of user to fetch |
+
+#### Insete user
+```https
+  POST /PaschoalottoApi/User/Insert/{UserDTO}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `UserDTO`      | `JSON` | **Required**. User to inserted |
+
+#### Update user
+```https
+  PUT /PaschoalottoApi/User/Update/{UserDTO}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `UserDTO`      | `JSON` | **Required**. User to updated |
+
+#### Delete user by id
+```https
+  DELETE /PaschoalottoApi/User/Delete/{id}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `int` | **Required**. Id of user to delete |
+
+#### Insert users from randomuser.me
+```https
+  GET /PaschoalottoApi/User/InsertRandom
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+|  |  | Simple call. Service will import 10 users at a time | 
+
+#### Generates report (Spreadsheet) with all users
+```https
+  GET /PaschoalottoApi/User/GenerateReport
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+|  |  | Simple call. service will generate the report and return the spreadsheet to download | 
