@@ -92,5 +92,18 @@ namespace paschoalotto_api.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("GenerateReport")]
+        public async Task<ActionResult> GenerateReportAsync()
+        {
+            var response = await this.userService.GenerateReportAsync();
+
+            if (response == default)
+            {
+                return NotFound();
+            }
+
+            return File(response, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "RelatorioUsuario.xlsx");
+        }
     }
 }

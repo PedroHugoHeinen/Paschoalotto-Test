@@ -6,6 +6,7 @@ using paschoalotto_api.Repository.Interfaces;
 using paschoalotto_api.Repository;
 using AutoMapper;
 using paschoalotto_api.Globals.DTOs;
+using System.Diagnostics;
 using paschoalotto_api.Models;
 using Microsoft.OpenApi.Models;
 
@@ -39,5 +40,12 @@ app.UseCors("AllowAll");
 app.UseAuthorization();
 
 app.MapControllers();
+
+var url = "https://localhost:7287/swagger/index.html";
+Process.Start(new ProcessStartInfo
+{
+    FileName = url,
+    UseShellExecute = true
+});
 
 app.Run();

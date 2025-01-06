@@ -1,6 +1,8 @@
 ﻿const apiUrl = 'https://localhost:7287/PaschoalottoApi/User';
 
 async function displayAllUsers() {
+    loading(true);
+
     const response = await fetch(`${apiUrl}/GetAll`);
     const users = await response.json();
 
@@ -23,13 +25,15 @@ async function displayAllUsers() {
         phoneCell.textContent = user.phone;
 
         const statusCell = row.insertCell(4);
-        statusCell.textContent = (user.status === true? 'Ativo' : 'Inativo');
+        statusCell.textContent = (user.status === true ? 'Ativo' : 'Inativo');
 
         const actionsCell = row.insertCell(5);
         actionsCell.innerHTML = `
             <button class="btn btn-secondary btn-sm" onclick="editUser('${user.id}')">Editar</button>
             <button class="btn btn-warning btn-sm" onclick="deleteUser('${user.id}')">Excluir</button>
         `;
+
+        loading(false);
     });
 }
 
@@ -62,6 +66,8 @@ document.getElementById("userForm").addEventListener("submit", async function (e
         lastUpdateAt
     };
 
+    loading(true);
+
     if (id) {
         const confirmAction = await confirmActionAsync('Atenção', 'Tem certeza que salvar as alterações?');
 
@@ -88,6 +94,8 @@ document.getElementById("userForm").addEventListener("submit", async function (e
             },
             body: JSON.stringify(userDTO)
         });
+
+        loading(false);
     }
 
     displayAllUsers();
@@ -96,6 +104,8 @@ document.getElementById("userForm").addEventListener("submit", async function (e
 });
 
 async function editUser(id) {
+    loading(true);
+
     const response = await fetch(`${apiUrl}/GetById/${id}`);
     const user = await response.json();
 
@@ -109,9 +119,13 @@ async function editUser(id) {
     document.getElementById("status").checked = user.status;
     document.getElementById("createAt").value = user.createAt;
     document.getElementById("lastUpdateAt").value = user.lastUpdateAt;
+
+    loading(false);
 }
 
 async function deleteUser(id) {
+    loading(true);
+
     const confirmAction = await confirmActionAsync('Atenção', 'Tem certeza que deseja excluir o usuário?');
 
     if (!confirmAction) { return; }
@@ -128,11 +142,36 @@ document.getElementById("cancelEdit").addEventListener("click", function () {
     document.getElementById("id").value = "";
 });
 
-document.getElementById("getReport").addEventListener("click", async function () {
-    
+document.getElementById("generateReport").addEventListener("click", async function () {
+
+    loading(true);
+
+    try {
+        const response = await fetch(`${apiUrl}/GenerateReport`);
+
+        if (!response.ok) {
+            throw new Error(`Erro ao baixar o relatório: ${response.statusText}`);
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Relatorio_Usuarios_Paschoalotto_${new Date().toISOString()}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        alert('Erro ao baixar o relatório');
+    }
+
+    loading(false);
 });
 
 document.getElementById("insertRandom").addEventListener("click", async function () {
+    loading(true);
+
     await fetch(`${apiUrl}/InsertRandom`);
 
     displayAllUsers();
@@ -155,6 +194,14 @@ async function confirmActionAsync(title, message) {
     });
 
     return result.isConfirmed;
+}
+
+function loading(status) {
+    if (status) {
+        document.getElementById('loadingSpinner').style.display = 'block';
+    } else {
+        document.getElementById('loadingSpinner').style.display = 'none';
+    }
 }
 
 displayAllUsers();
